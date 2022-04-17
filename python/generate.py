@@ -43,7 +43,6 @@ def make_small_instance() -> Instance:
     cities[16] = Point(21,1)
     cities[18] = Point(17,0)
     cities[24] = Point(22,5)
-    print(cities)
     return Size.SMALL.instance(cities)
 
 
