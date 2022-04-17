@@ -7,6 +7,7 @@ For usage, run `python3 generate.py --help`.
 
 import argparse
 from pathlib import Path
+from random import random
 from typing import Callable, Dict
 
 from instance import Instance
@@ -23,8 +24,26 @@ def make_small_instance() -> Instance:
     and add them to the cities array. The skeleton will check that the instance
     is valid.
     """
+           
+
     cities = []
-    # YOUR CODE HERE
+    x = 0
+    y = 0
+    while (x <= 30):        
+        if (x % 6) == 1:
+             y += 3
+        while (y <= 30):
+            cities.append(Point(x,y))
+            y += 7
+        y = 0
+        x += 6
+    cities[7] = Point(14, 16)
+    cities[8] = Point(9,7)
+    cities[12] = Point(26,3)
+    cities[16] = Point(21,1)
+    cities[18] = Point(17,0)
+    cities[24] = Point(22,5)
+    print(cities)
     return Size.SMALL.instance(cities)
 
 
