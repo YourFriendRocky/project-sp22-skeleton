@@ -7,6 +7,7 @@ For usage, run `python3 generate.py --help`.
 
 import argparse
 from pathlib import Path
+from random import random
 from typing import Callable, Dict
 
 from instance import Instance
@@ -23,10 +24,12 @@ def make_small_instance() -> Instance:
     and add them to the cities array. The skeleton will check that the instance
     is valid.
     """
+           
+
     cities = []
-<<<<<<< HEAD
-    # YOUR CODE HERE
-=======
+
+
+
     x = 0
     y = 0
     while (x <= 30):        
@@ -43,8 +46,6 @@ def make_small_instance() -> Instance:
     cities[16] = Point(21,1)
     cities[18] = Point(17,0)
     cities[24] = Point(22,5)
-    print(cities)
->>>>>>> parent of b99e540 (removed print() statement in small instance)
     return Size.SMALL.instance(cities)
 
 
@@ -57,7 +58,10 @@ def make_medium_instance() -> Instance:
     is valid.
     """
     cities = []
-    # YOUR CODE HERE
+    x = [29,0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 48, 8, 8, 8, 8, 16, 38, 37, 16, 13, 3, 16, 16, 24, 24, 24, 24, 18, 24, 24, 24, 32, 16, 25, 32, 32, 32, 32, 32, 40, 40, 15, 40, 40, 40, 40, 40, 48,48, 48, 48, 48, 48, 48]
+    y = [7, 7, 14, 21, 28, 35, 42, 49, 0, 7, 14, 28, 28, 35, 42, 49, 0, 17, 22, 21, 49, 26, 42, 49, 0, 7, 14, 21,30, 35, 42, 49, 0, 1, 43, 21, 28, 35, 42, 49, 0, 7, 35, 21, 28, 35, 42, 49, 0, 7, 14, 21, 28, 35, 42]
+    for i in range(55):
+        cities.append(Point(x[i], y[i]))
     return Size.MEDIUM.instance(cities)
 
 
@@ -112,9 +116,7 @@ def make_large_instance() -> Instance:
     cities[98] = Point(81, 65)
     cities[103] = Point(6, 15)
     cities[105] = Point(30, 51)
-    
-    
-    
+    # YOUR CODE HERE
     return Size.LARGE.instance(cities)
 
 
