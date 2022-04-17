@@ -24,7 +24,27 @@ def make_small_instance() -> Instance:
     is valid.
     """
     cities = []
+<<<<<<< HEAD
     # YOUR CODE HERE
+=======
+    x = 0
+    y = 0
+    while (x <= 30):        
+        if (x % 6) == 1:
+             y += 3
+        while (y <= 30):
+            cities.append(Point(x,y))
+            y += 7
+        y = 0
+        x += 6
+    cities[7] = Point(14, 16)
+    cities[8] = Point(9,7)
+    cities[12] = Point(26,3)
+    cities[16] = Point(21,1)
+    cities[18] = Point(17,0)
+    cities[24] = Point(22,5)
+    print(cities)
+>>>>>>> parent of b99e540 (removed print() statement in small instance)
     return Size.SMALL.instance(cities)
 
 
