@@ -7,7 +7,6 @@ For usage, run `python3 generate.py --help`.
 
 import argparse
 from pathlib import Path
-from random import random
 from typing import Callable, Dict
 
 from instance import Instance
@@ -24,25 +23,8 @@ def make_small_instance() -> Instance:
     and add them to the cities array. The skeleton will check that the instance
     is valid.
     """
-           
-
     cities = []
-    x = 0
-    y = 0
-    while (x <= 30):        
-        if (x % 6) == 1:
-             y += 3
-        while (y <= 30):
-            cities.append(Point(x,y))
-            y += 7
-        y = 0
-        x += 6
-    cities[7] = Point(14, 16)
-    cities[8] = Point(9,7)
-    cities[12] = Point(26,3)
-    cities[16] = Point(21,1)
-    cities[18] = Point(17,0)
-    cities[24] = Point(22,5)
+    # YOUR CODE HERE
     return Size.SMALL.instance(cities)
 
 
@@ -55,10 +37,7 @@ def make_medium_instance() -> Instance:
     is valid.
     """
     cities = []
-    x = [29,0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 48, 8, 8, 8, 8, 16, 38, 37, 16, 13, 3, 16, 16, 24, 24, 24, 24, 18, 24, 24, 24, 32, 16, 25, 32, 32, 32, 32, 32, 40, 40, 15, 40, 40, 40, 40, 40, 48,48, 48, 48, 48, 48, 48]
-    y = [7, 7, 14, 21, 28, 35, 42, 49, 0, 7, 14, 28, 28, 35, 42, 49, 0, 17, 22, 21, 49, 26, 42, 49, 0, 7, 14, 21,30, 35, 42, 49, 0, 1, 43, 21, 28, 35, 42, 49, 0, 7, 35, 21, 28, 35, 42, 49, 0, 7, 14, 21, 28, 35, 42]
-    for i in range(55):
-        cities.append(Point(x[i], y[i]))
+    # YOUR CODE HERE
     return Size.MEDIUM.instance(cities)
 
 
@@ -71,80 +50,51 @@ def make_large_instance() -> Instance:
     is valid.
     """
     cities = []
-    x = 0
-    y = 0
-    while (x <= 100):
-        if ()
+    x=0
+    for i in range(0, 100, 8):
+        for j in range(0, 100, 7):
+            if i%2:
+                cities.append(Point(i, j+4))
+            else:
+                cities.append(Point(i,j))
+            x = x+1
+    
     # YOUR CODE HERE
-    cities.append(Point(0, 0))
-    cities.append(Point(0, 7))
-    cities.append(Point(0, 14))
-    cities.append(Point(0, 21))
-    cities.append(Point(0, 28))
-    cities.append(Point(0, 35))
-    cities.append(Point(0, 42))
-    cities.append(Point(0, 56))
-    cities.append(Point(0, 70))
-    cities.append(Point(0, 77))
-    cities.append(Point(0, 84))
-    cities.append(Point(8, 0))
-    cities.append(Point(8, 7))
-    cities.append(Point(8, 14))
-    cities.append(Point(8, 21))
-    cities.append(Point(8, 28))
-    cities.append(Point(8, 35))
-    cities.append(Point(8, 42))
-    cities.append(Point(8, 42))
-    cities.append(Point(8, 49))
-    cities.append(Point(8, 56))
-    cities.append(Point(8, 63))
-    cities.append(Point(8, 77))
-    cities.append(Point(8, 84))
-    cities.append(Point)(8, 91)
-    cities.append(Point(16, 0))
-    cities.append(Point(16, 7))
-    cities.append(Point(16, 14))
-    cities.append(Point(16, 21))
-    cities.append(Point(16, 35))
-    cities.append(Point(16, 49))
-    cities.append(Point(16, 56))
-    cities.append(Point(16, 63))
-    cities.append(Point(16, 77))
-    cities.append(Point(16, 84))
-    cities.append(Point(24, 0))
-    cities.append(Point(24, 7))
-    cities.append(Point(24, 14))
-    cities.append(Point(24, 21))
-    cities.append(Point(24, 28))
-    cities.append(Point(24, 35))
-    cities.append(Point(24, 42))
-    cities.append(Point(24, 49))
-    cities.append(Point(24, 56))
-    cities.append(Point(24, 63))
-    cities.append(Point(24, 70))
-    cities.append(Point(24, 77))
-    cities.append(Point(24, 84))
-    cities.append(Point(24, 91))
-    cities.append(Point(24, 98))
-    cities.append(Point(32, 0))
-    cities.append(Point(32, 7))
-    cities.append(Point(32, 14))
-    cities.append(Point(32, 21))
-    cities.append(Point(32, 28))
-    cities.append(Point(32, 35))
-    cities.append(Point(32, 42))
-    cities.append(Point(32, 49))
-    cities.append(Point(32, 56))
-    cities.append(Point(32, 63))
-    cities.append(Point(32, 70))
-    cities.append(Point(32, 77))
-    cities.append(Point(32, 84))
-    cities.append(Point(32, 98))
-    cities.append(Point(40, 0))
-    cities.append(Point(40, 7))
-    cities.append(Point(40, 14))
-    cities.append(Point(40, 21))
-    cities.append(Point(40, 35))
+    cities[7] = Point(36, 76)
+    cities[9] = Point(89, 1)
+    cities[14] = Point(12, 50)
+    cities[25] = Point(64,62)
+    cities[29] = Point(94,63)
+    cities[34] = Point(53,83)
+    cities[190] = Point(77, 49)
+    cities[176] = Point(99, 26)
+    cities[172] = Point(17,44)
+    cities[166] = Point(52, 33)
+    cities[165] = Point(73, 5)
+    cities[161] = Point(31, 41)
+    cities[160] = Point(16, 23)
+    cities[153] = Point(22, 40)
+    cities[151] = Point(92, 32)
+    cities[144] = Point(3, 18)
+    cities[143] = Point(87, 72)
+    cities[139] = Point(48, 90)
+    cities[135] = Point(88, 43)
+    cities[134] = Point(54, 9)
+    cities[107] = Point(96, 58)
+    cities[36] = Point(86, 84)
+    cities[40] = Point(74, 67)
+    cities[43] = Point(35, 97)
+    cities[44] = Point(29, 37)
+    cities[73] = Point(34, 100)
+    cities[79] = Point(28, 27)
+    cities[83] = Point(47, 95)
+    cities[87] = Point(91, 55)
+    cities[98] = Point(81, 65)
+    cities[103] = Point(6, 15)
+    cities[105] = Point(30, 51)
+    
+    
+    
     return Size.LARGE.instance(cities)
 
 
