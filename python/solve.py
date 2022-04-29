@@ -4,7 +4,6 @@ Modify this file to implement your own solvers.
 
 For usage, run `python3 solve.py --help`.
 """
-    
 import argparse
 from pathlib import Path
 import sys
