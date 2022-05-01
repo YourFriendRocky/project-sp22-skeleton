@@ -146,6 +146,7 @@ SIZE_STR_TO_SIZE: Dict[str, Size] = {
     LARGE: Size.LARGE,
 }
 
+
 def outfile(args, size: str):
     if args.output_dir == "-":
         return StdoutFileWrapper()

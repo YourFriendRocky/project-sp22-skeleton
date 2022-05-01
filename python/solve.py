@@ -6,7 +6,6 @@ For usage, run `python3 solve.py --help`.
 """
 import argparse
 from pathlib import Path
-import sys
 from typing import Callable, Dict
 import numpy as np
 from gekko import GEKKO
@@ -130,11 +129,13 @@ def infile(args):
 
     return Path(args.input).open("r")
 
+
 def outfile(args):
     if args.output == "-":
         return StdoutFileWrapper()
 
     return Path(args.output).open("w")
+
 
 def main(args):
     with infile(args) as f:
@@ -153,7 +154,7 @@ if __name__ == "__main__":
                         "read an instance from. Use - for stdin.")
     parser.add_argument("--solver", required=True, type=str,
                         help="The solver type.", choices=SOLVERS.keys())
-    parser.add_argument("output", type=str, 
-                        help="The output file. Use - for stdout.", 
+    parser.add_argument("output", type=str,
+                        help="The output file. Use - for stdout.",
                         default="-")
     main(parser.parse_args())
