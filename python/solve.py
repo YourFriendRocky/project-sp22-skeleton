@@ -32,7 +32,7 @@ def solve_GEKKO(instance: Instance) -> Solution:
     Rp = instance.penalty_radius
     Rs = instance.coverage_radius
     cities = instance.cities
-    m = GEKKO(remote=False)
+    m = GEKKO(remote=True)
     #DxD Variable Array (representative of graph)
     v = m.Array(m.Var, (instance.grid_side_length, instance.grid_side_length),lb=0,ub=1,integer=True)
     #Initial Guess (1 on each city, 0 everywhere else)
