@@ -10,8 +10,9 @@ import sys
 from typing import Callable, Dict
 import numpy as np
 from gekko import GEKKO
-import gurobipy
+from gurobipy import *
 import math
+from mip import *
 from point import Point
 from instance import Instance
 from solution import Solution
@@ -233,15 +234,20 @@ def solve_greedy(instance: Instance) -> Solution:
     )
 
 def solve_gurobi(instance: Instance) -> Solution:
-    return Solution(
-        instance = instance,
-        towers = instance.cities
-    )
+    
+    
 
     D = instance.grid_side_length
     Rp = instance.penalty_radius
     Rs = instance.coverage_radius
     cities = instance.cities
+    m = Model(sense=MINIMIZE, solver_name=GRB)
+    m = Model.addMVar((D, D), vtype = GRB.BINARY)
+
+    return Solution(
+        instance = instance,
+        towers = instance.cities
+    )
 
 
 
@@ -253,7 +259,8 @@ def solve_gurobi(instance: Instance) -> Solution:
 
 SOLVERS: Dict[str, Callable[[Instance], Solution]] = {
     "naive": solve_naive,
-    "GEKKO": solve_GEKKO
+    "GEKKO": solve_GEKKO,
+    "GUROBI": solve_gurobi
 }
 
 
