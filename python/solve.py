@@ -29,6 +29,9 @@ def solve_GEKKO(instance: Instance) -> Solution:
     @param: instance: the given input instance, has parameters grid_side_length, coverage_radius, penalty_radius, and cities
     @return: Solution
     """
+    #Run Greedy Solution for Initial Estimates:
+    greedy_sol = solve_greedy(instance)
+    initial_towers = greedy_sol.towers
     #given variables
     D = instance.grid_side_length
     Rp = instance.penalty_radius
@@ -43,11 +46,16 @@ def solve_GEKKO(instance: Instance) -> Solution:
             v[i,j].value = 0
             v[i,j].upper = 1
             v[i,j].lower = 0
-
-    for c in instance.cities:
-        v[c.x,c.y].value = 1
-        v[i,j].upper = 1
-        v[i,j].lower = 0
+    """
+    for t in initial_towers:
+        v[t.x,t.y].value = 1
+        v[t.x,t.y].upper = 1
+        v[t.x,t.y].lower = 0"""
+    for c in cities:
+        x,y = c.x,c.y
+        v[x,y].value = 1
+        v[x,y].upper = 1
+        v[x,y].lower = 0
     #define parameter
     one = m.Param(value = 1)
     zero = m.Param(value = 0)
@@ -83,8 +91,15 @@ def solve_GEKKO(instance: Instance) -> Solution:
                             for j in range(max(0, y-Rp), min(Rp, y+Rp)):        
                                 if (Point(i,j).distance_obj(Point(x,y)) <= Rp):
                                     w.append(v[i,j])
+                            
+                        #linear approximation
                         #m.Minimize((m.log(170) + (.17 * m.sum(w))) * v[x,y])
-                        m.Minimize((170 * 2.7182 ** (.17 * m.sum(w))) * v[x,y])
+
+                        #actual function
+                        #m.Minimize((170 * 2.7182 ** (.17 * m.sum(w))) * v[x,y])
+
+                        #taylor series 2nd order
+                        m.Minimize((170 + 170 * (.17) * m.sum(w) + 170 * (.17**2) * m.sum(w)**2) * v[x,y])
 
     
     
@@ -136,25 +151,39 @@ def solve_knapsack(instance: Instance) -> Solution:
         in_range = []
         for i in range(max(0, x-instance.coverage_radius), min(instance.grid_side_length, x+instance.coverage_radius)):
             for j in range(max(0, y-instance.coverage_radius), min(instance.grid_side_length, y+instance.coverage_radius)):
-                if Point(i,j).distance_obj <= instance.coverage_radius:
+                if Point(i,j).distance_obj(Point(x,y)) <= instance.coverage_radius:
                     in_range.append(Point(i,j))
-        towers.append(in_range)
-    
-
+        towers.append((Point(x,y),in_range))
+    towers = solve_knapsack_helper(cities, towers, instance.penalty_radius, [])
     return Solution(
         instance = instance,
-        towers = solve_knapsack_helper(cities, towers, instance.penalty_radius, [])
+        towers = towers
     )
 
 
 def solve_knapsack_helper(cities, towers_in_range, Rp, sol):
     """Tail recursive solution similar to the coin-choosing problem"""
-    if cities is not True:
-        return sol
-    return min([solve_knapsack_helper( \
-        cities[1:], towers_in_range[1:], sol.append(t)) for t in towers_in_range[0]], key = lambda g: knapsack_penalty(g, Rp))
-
     
+    if len(cities) == 0:
+        return sol
+    city = cities[0]
+    in_range = []
+    for tup in towers_in_range:
+        if tup[0].distance_obj(city) == 0:
+            in_range = tup[1]
+            towers_in_range.remove(tup)
+    sols = [solve_knapsack_helper(
+        cities[1:], towers_in_range[:], Rp, sol + [t]) for t in in_range]
+    print("Cities length:", len(cities))
+    ret_val = min(sols, key = lambda g: knapsack_penalty(g, Rp))
+    print(ret_val)
+    return ret_val
+    """
+    sol = min([solve_knapsack_helper(
+        cities[1:], towers_in_range, Rp, sol + [t]) for t in in_range], key = lambda g: knapsack_penalty(g, Rp))
+    return sol
+    """
+
 def knapsack_penalty(towers, Rp):
         """Computes the penalty given penalty radius and number of towers."""
         penalty = 0
@@ -179,7 +208,7 @@ def solve_greedy(instance: Instance) -> Solution:
 
     #While loops that contineus until all cities are exausted from the cities list
     #(We covered every single city)
-    while cities.len() != 0:
+    while len(cities) != 0:
         #For every single while loop iteration we will pick a best tower to place
         #
         best_tower = None
@@ -190,12 +219,12 @@ def solve_greedy(instance: Instance) -> Solution:
             x,y = c.x,c.y
             for i in range(max(0, x-instance.coverage_radius), min(instance.grid_side_length, x+instance.coverage_radius)):
                 for j in range(max(0, y-instance.coverage_radius), min(instance.grid_side_length, y+instance.coverage_radius)):
-                    if Point(i,j).distance_obj <= instance.coverage_radius:
+                    if Point(i,j).distance_obj(Point(x,y)) <= instance.coverage_radius:
                         if (i,j) not in tower_tracker:
                             tower_tracker[(i,j)] = [c]
                         else:
                             tower_tracker[(i,j)].append(c)
-        best_tower = max(tower_tracker, key = len(tower_tracker.get))
+        best_tower = max(tower_tracker, key = lambda k: len(tower_tracker.get(k)))
         towers.append(Point(best_tower[0], best_tower[1]))
         for c in tower_tracker[best_tower]:
             cities.remove(c)
@@ -253,6 +282,7 @@ def solve_gurobi(instance: Instance) -> Solution:
 
 SOLVERS: Dict[str, Callable[[Instance], Solution]] = {
     "naive": solve_naive,
+    "greedy": solve_greedy,
     "GEKKO": solve_GEKKO
 }
 
