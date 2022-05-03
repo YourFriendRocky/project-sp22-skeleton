@@ -288,13 +288,8 @@ def solve_gurobi(instance: Instance) -> Solution:
 
 SOLVERS: Dict[str, Callable[[Instance], Solution]] = {
     "naive": solve_naive,
-<<<<<<< HEAD
-    "GEKKO": solve_GEKKO,
-    "GUROBI": solve_gurobi
-=======
     "greedy": solve_greedy,
     "GEKKO": solve_GEKKO
->>>>>>> 0f4a53936096a7df1b0e43f7e3bcac4e5de12065
 }
 
 

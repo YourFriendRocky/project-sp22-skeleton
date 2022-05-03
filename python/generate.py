@@ -26,25 +26,6 @@ def make_small_instance() -> Instance:
     """
            
     cities = []
-<<<<<<< HEAD
-    x = 0
-    y = 0
-    while (x <= 30):        
-        if (x % 6) == 1:
-             y += 3
-        while (y <= 30):
-            cities.append(Point(x,y))
-            y += 7
-        y = 0
-        x += 6
-    cities[7] = Point(14, 16)
-    cities[8] = Point(9,7)
-    cities[12] = Point(26,3)
-    cities[16] = Point(21,1)
-    cities[18] = Point(17,0)
-    cities[24] = Point(22,5)
-    print(cities)
-=======
     for i in range(25):
         cities.append(0)
     cities[0] = Point(0,0)
@@ -72,7 +53,6 @@ def make_small_instance() -> Instance:
     cities[22] = Point(24,14)
     cities[23] = Point(24,21)
     cities[24] = Point(22,5)
->>>>>>> c08261dcc0348a4933d2cc60618d3de3e4761e53
     return Size.SMALL.instance(cities)
 
 
@@ -85,11 +65,7 @@ def make_medium_instance() -> Instance:
     is valid.
     """
     cities = []
-<<<<<<< HEAD
-    x = [29,0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 48, 8, 8, 8, 8, 16, 38, 37, 16, 13, 3, 16, 16, 24, 24, 24, 24, 18, 24, 24, 24, 32, 16, 25, 32, 32, 32, 32, 32, 40, 40, 15, 40, 40, 40, 40, 40, 48,48, 48, 48, 48, 48, 48]
-=======
     x = [29,0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 47, 8, 8, 8, 8, 16, 38, 37, 16, 13, 3, 16, 16, 24, 24, 24, 24, 18, 24, 24, 24, 32, 16, 25, 32, 32, 32, 32, 32, 40, 40, 15, 40, 40, 40, 40, 40, 48,48, 48, 48, 48, 48, 48]
->>>>>>> c08261dcc0348a4933d2cc60618d3de3e4761e53
     y = [7, 7, 14, 21, 28, 35, 42, 49, 0, 7, 14, 28, 28, 35, 42, 49, 0, 17, 22, 21, 49, 26, 42, 49, 0, 7, 14, 21,30, 35, 42, 49, 0, 1, 43, 21, 28, 35, 42, 49, 0, 7, 35, 21, 28, 35, 42, 49, 0, 7, 14, 21, 28, 35, 42]
     for i in range(55):
         cities.append(Point(x[i], y[i]))
