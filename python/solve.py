@@ -88,19 +88,19 @@ def solve_GEKKO(instance: Instance) -> Solution:
                         included[(i,j)] = Point(i,j)
                         #goes through all points in the general area
                         w = []
-                        for a in range(max(0, i-Rp), min(Rp, i+Rp)):
-                            for b in range(max(0, j-Rp), min(Rp, j+Rp)):        
-                                if (Point(i,j).distance_obj(Point(x,y)) <= Rp):
-                                    w.append(v[i,j])
+                        for a in range(max(0, i-Rp), min(D, i+Rp)):
+                            for b in range(max(0, j-Rp), min(D, j+Rp)):        
+                                if (Point(i,j).distance_obj(Point(a,b)) <= Rp):
+                                    w.append(v[a,b])
                             
                         #linear approximation
                         #m.Minimize((m.log(170) + (.17 * m.sum(w))) * v[x,y])
 
                         #actual function
-                        #m.Minimize((170 * 2.7182 ** (.17 * m.sum(w))) * v[x,y])
+                        m.Minimize((170 * 2.7182 ** (.17 * m.sum(w))) * v[x,y])
 
                         #taylor series 2nd order
-                        m.Minimize((170 + 170 * (.17) * m.sum(w) + 170 * (.17**2) * m.sum(w)**2) * v[x,y])
+                        #m.Minimize((170 + 170 * (.17) * m.sum(w) + 170 * (.17**2) * m.sum(w)**2) * v[x,y])
 
     
     
