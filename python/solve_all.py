@@ -21,6 +21,7 @@ from solution import Solution
 # YOUR CODE HERE
 from solve import solve_naive
 from solve import solve_GEKKO
+from solve import solve_gurobi
 
 
 class Size(enum.Enum):
@@ -33,11 +34,11 @@ def solver(size: Size, instance: Instance) -> Solution:
     # Modify this function to use your imported solvers.
     # YOUR CODE HERE
     if size == Size.SMALL:
-        return solve_GEKKO(instance)
+        return solve_gurobi(instance)
     elif size == Size.MEDIUM:
-        return solve_GEKKO(instance)
+        return solve_gurobi(instance)
     elif size == Size.LARGE:
-        return solve_GEKKO(instance)
+        return solve_gurobi(instance)
 
 
 # You shouldn't need to modify anything below this line.

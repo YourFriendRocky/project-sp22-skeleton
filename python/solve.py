@@ -270,12 +270,71 @@ def solve_gurobi(instance: Instance) -> Solution:
     Rp = instance.penalty_radius
     Rs = instance.coverage_radius
     cities = instance.cities
+    #Creates the mip model and sets it to use GRB
     m = Model(sense=MINIMIZE, solver_name=GRB)
-    m = Model.addMVar((D, D), vtype = GRB.BINARY)
+    #Creates list of D * D binary variables to use
+    tower_list = [ m.add_var(var_type=INTEGER, lb = 0, ub = 1) for i in range(D * D) ]
+    penalty_list = [m.add_var(var_type=INTEGER, lb = 0) for i in range(D * D) ]
+    
+    #Objective Function
+    #goes through every single tower placement within a city's radius
+    #t is tower from tower list
+    #x is the penalty from the penalty list
+    #170t + 170(.17)x <=
+                        
+
+    m.objective = xsum(math.log(170) * tower_list[i] + (.17 * penalty_list[i]) for i in range(D * D))
+    
+    #m.objective = xsum(tower_list[i] * 170 + 170 * .17 * math.e**(.17) * penalty_list[i] for i in range(D * D) )
+
+
+    #Constraints
+    #City constraints: There has to be a radio tower next to a city
+    for c in instance.cities:
+        x,y=c.x,c.y
+        l= []
+        for i in range(max(0, x-instance.coverage_radius), min(instance.grid_side_length, x+instance.coverage_radius)):
+            for j in range(max(0, y-instance.coverage_radius), min(instance.grid_side_length, y+instance.coverage_radius)):
+                #if i+j<=3 or (abs(i-x) == abs(j-y) and (abs(i-x) == 2 or abs(j-y) == 2)):
+                #    l.append(v[i,j]) TODO: Fix this so that it's using dist instead
+                if (c.distance_obj(Point(i, j)) <= instance.coverage_radius):
+                    l.append(tower_list[i + (j * D)])
+        m += (xsum(l) >= 1)
+
+    #Penalty Constraints: Create penalty variables that take in the sum of the towers and returns them
+    #Will look something like: x = towers_around * cost
+    #Will track all the tower costs
+    #penalty_list holds a list of penalties.
+    #penalty <= tower_exists * very large N 
+    #penalty >= sum(towers_that_hit_it)
+    included = {}
+    for c in cities:
+        x,y = c.x,c.y
+        for i in range(max(0, x-instance.coverage_radius), min(instance.grid_side_length, x+instance.coverage_radius)):
+            for j in range(max(0, y-instance.coverage_radius), min(instance.grid_side_length, y+instance.coverage_radius)):
+                if(c.distance_obj(Point(i,j)) <= Rs):
+                    if((i,j)) not in included:
+                        included[(i,j)] = Point(i,j)
+                        #goes through all points in the general area
+                        w = []
+                        for k in range(max(0, i-Rp), min(Rp, i+Rp)):
+                            for l in range(max(0, j-Rp), min(Rp, j+Rp)):        
+                                if (Point(i,j).distance_obj(Point(k,l)) <= Rp):
+                                    w.append(tower_list[k + (l * D)])
+                        m += penalty_list[i + (j * D)] >= xsum(w) - (1 - tower_list[i + (j * D)]) * 99999999
+    
+    m.optimize()
+    sol = []
+    
+    for i in range(D):
+        for j in range(D):
+            if (tower_list[i + j * D].x and tower_list[i + j * D].x >= .99):
+                print(f"Tower exists at ({i},{j}): {tower_list[i + j * D].x}")
+                sol.append(Point(i, j))
 
     return Solution(
         instance = instance,
-        towers = instance.cities
+        towers = sol
     )
 
 
@@ -288,13 +347,9 @@ def solve_gurobi(instance: Instance) -> Solution:
 
 SOLVERS: Dict[str, Callable[[Instance], Solution]] = {
     "naive": solve_naive,
-<<<<<<< HEAD
-    "GEKKO": solve_GEKKO,
-    "GUROBI": solve_gurobi
-=======
+    "GUROBI": solve_gurobi,
     "greedy": solve_greedy,
     "GEKKO": solve_GEKKO
->>>>>>> 0f4a53936096a7df1b0e43f7e3bcac4e5de12065
 }
 
 
