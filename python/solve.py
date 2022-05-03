@@ -88,8 +88,8 @@ def solve_GEKKO(instance: Instance) -> Solution:
                         included[(i,j)] = Point(i,j)
                         #goes through all points in the general area
                         w = []
-                        for i in range(max(0, x-Rp), min(Rp, x+Rp)):
-                            for j in range(max(0, y-Rp), min(Rp, y+Rp)):        
+                        for a in range(max(0, i-Rp), min(Rp, i+Rp)):
+                            for b in range(max(0, j-Rp), min(Rp, j+Rp)):        
                                 if (Point(i,j).distance_obj(Point(x,y)) <= Rp):
                                     w.append(v[i,j])
                             
