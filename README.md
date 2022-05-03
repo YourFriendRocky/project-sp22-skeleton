@@ -39,6 +39,8 @@ python3 python/solve_all.py inputs outputs
 
 in the root directory.
 
+(We used solve_all.py)
+
 
 ## Merging
 
