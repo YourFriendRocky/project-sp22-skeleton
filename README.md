@@ -30,7 +30,7 @@ python3 solve.py case.in --solver=naive case.out
 
 We've also created a skeleton that runs your solver on all cases and puts them
 in the output directory. To use it, modify
-[`python/solve_all.py`](python/solve_all.py) to use your solver function(s).
+[`python/solve_all.py`](python/solve_all.py) to use your solver function(s), in this case, solve_gurobi.
 Then run
 
 ```
@@ -39,7 +39,7 @@ python3 python/solve_all.py inputs outputs
 
 in the root directory.
 
-(We used solve_all.py)
+(We used solve_all.py using the function solve_gurobi)
 
 
 ## Merging
