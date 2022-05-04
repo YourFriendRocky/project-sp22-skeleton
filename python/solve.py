@@ -324,7 +324,7 @@ def solve_gurobi(instance: Instance) -> Solution:
                         m += penalty_list[i + (j * D)] >= xsum(w) - (1 - tower_list[i + (j * D)]) * 99999999
     
     
-    m.optimize()
+    m.optimize(max_seconds=5)
     sol = []
     
     for i in range(D):
