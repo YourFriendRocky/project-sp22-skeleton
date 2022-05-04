@@ -293,8 +293,8 @@ def solve_gurobi(instance: Instance) -> Solution:
     for c in instance.cities:
         x,y=c.x,c.y
         l= []
-        for i in range(max(0, x-instance.coverage_radius), min(instance.grid_side_length, x+instance.coverage_radius)):
-            for j in range(max(0, y-instance.coverage_radius), min(instance.grid_side_length, y+instance.coverage_radius)):
+        for i in range(max(0, x-Rs), min(D, x+Rs)):
+            for j in range(max(0, y-Rs), min(D, y+Rs)):
                 #if i+j<=3 or (abs(i-x) == abs(j-y) and (abs(i-x) == 2 or abs(j-y) == 2)):
                 #    l.append(v[i,j]) TODO: Fix this so that it's using dist instead
                 if (c.distance_obj(Point(i, j)) <= instance.coverage_radius):
@@ -317,11 +317,12 @@ def solve_gurobi(instance: Instance) -> Solution:
                         included[(i,j)] = Point(i,j)
                         #goes through all points in the general area
                         w = []
-                        for k in range(max(0, i-Rp), min(Rp, i+Rp)):
-                            for l in range(max(0, j-Rp), min(Rp, j+Rp)):        
+                        for k in range(max(0, i-Rp), min(D, i+Rp)):
+                            for l in range(max(0, j-Rp), min(D, j+Rp)):        
                                 if (Point(i,j).distance_obj(Point(k,l)) <= Rp):
                                     w.append(tower_list[k + (l * D)])
                         m += penalty_list[i + (j * D)] >= xsum(w) - (1 - tower_list[i + (j * D)]) * 99999999
+    
     
     m.optimize()
     sol = []
